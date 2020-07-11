@@ -34,6 +34,10 @@ class AuthenticationService {
         if (user === null) return false;
         return true;
     }
+
+    logout() {
+        sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+    }
 }
 
 export default new AuthenticationService();
