@@ -2,28 +2,27 @@
 import axios from 'axios';
 export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 class AuthenticationService {
-    executeBasicAuthenticationService(username, password) {
-        return axios.get('/basicauth',
-            { headers: { authorization: this.createBasicAuthToken(username, password) } }
+    executeJwtAuthenticationService(username, password) {
+        return axios.post('/authenticate',
+            { username, password }
         );
     }
 
-    createBasicAuthToken(username, password) {
-        return 'Basic ' + window.btoa(username + ":" + password);
+    createJWTToken(token) {
+        return 'Bearer ' + token;
     }
 
-    registerSuccessfulLogin(username, password) {
+    registerSuccessfulLoginForJwt(username, token) {
         sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username);
-        this.setupAxiosInterceptors(this.createBasicAuthToken(username, password));
+        this.setupAxiosInterceptors(this.createJWTToken(token));
     }
 
     // sets up the axios interceptor to add the authorization token on every subsequent REST API call. config.headers.authorization = token
     setupAxiosInterceptors(token) {
         axios.interceptors.request.use(
             config => {
-                if (this.isUserLoggedIn()) {
-                    config.headers.authorization = token
-                }
+                // 요청마다 쿠키에 받은 토큰을 서버에 전송
+                config.withCredentials = true;
                 return config;
             }
         )
