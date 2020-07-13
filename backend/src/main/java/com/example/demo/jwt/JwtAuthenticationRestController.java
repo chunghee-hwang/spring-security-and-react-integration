@@ -1,5 +1,7 @@
 package com.example.demo.jwt;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.servlet.http.Cookie;
@@ -44,14 +46,16 @@ public class JwtAuthenticationRestController {
     private UserDetailsService jwtInMemoryUserDetailsService;
 
     @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
-    public ResponseEntity<String> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest,
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest,
             HttpServletResponse response) throws AuthenticationException {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = jwtInMemoryUserDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
         addTokenToCookie(response, token);
-        return new ResponseEntity<>("Authentication success", HttpStatus.OK);
+        Map<String, Object> result = new HashMap<>();
+        result.put("message", "Authentication success");
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     private void addTokenToCookie(HttpServletResponse response, String token) {

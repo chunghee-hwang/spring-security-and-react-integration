@@ -6,7 +6,7 @@ import CourseDataService from '../service/CourseDataService';
 import { useEffect } from 'react';
 import { useCallback } from 'react';
 import { useState } from 'react';
-export default function ListCoursesComponent() {
+export default function ListCoursesComponent(props) {
     const [courses, setCourses] = useState([]);
     const [user, setUser] = useState(null);
     const refreshCourses = useCallback(() => {
@@ -16,8 +16,12 @@ export default function ListCoursesComponent() {
                 setCourses(response.data.courses);
                 setUser(response.data.user);
             }
-        );
-    }, []);
+        ).catch(error => {
+            alert('error: ' + error);
+            props.history.push('/login');
+        });
+
+    }, [props.history]);
     useEffect(() => {
         refreshCourses();
     }, [refreshCourses]);

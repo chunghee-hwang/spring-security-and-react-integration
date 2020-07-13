@@ -24,14 +24,16 @@ public class CourseResource {
     @GetMapping("/instructors/{username}/courses")
     public ResponseEntity<?> getAllCourses(@PathVariable String username,
             @AuthenticationPrincipal JwtUserDetails userDetails) {
+        Map<String, Object> result = new HashMap<>();
         if (userDetails == null) {
-            return new ResponseEntity<>("Authentication is not correct", HttpStatus.BAD_REQUEST);
+            result.put("message", "Authentication is not correct");
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
         } else {
-            Map<String, Object> map = new HashMap<>();
+
             List<Course> courses = courseManagementService.findAll();
-            map.put("courses", courses);
-            map.put("user", userDetails);
-            return new ResponseEntity<>(map, HttpStatus.OK);
+            result.put("courses", courses);
+            result.put("user", userDetails);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
     }
 }
