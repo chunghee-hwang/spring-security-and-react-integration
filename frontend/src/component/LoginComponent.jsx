@@ -19,8 +19,8 @@ export default function LoginComponent(props) {
 
     const loginClicked = () => {
         AuthenticationService.executeJwtAuthenticationService(state.username, state.password)
-            .then((response) => {
-                AuthenticationService.registerSuccessfulLoginForJwt(state.username, response.data.token);
+            .then(() => {
+                AuthenticationService.registerSuccessfulLoginForJwt(state.username);
                 props.history.push('/courses')
             }).catch(e => {
                 console.log(e);

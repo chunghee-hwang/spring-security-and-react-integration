@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
+// API 요청을 할 때마다 사용자가 인증되어있는지 확인하는 필터
 @Component
 public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFilter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -47,11 +47,12 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
         Cookie[] cookies = request.getCookies();
         String username = null;
         String jwtToken = null;
-
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(tokenCookieName)) {
-                jwtToken = cookie.getValue();
-                break;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(tokenCookieName)) {
+                    jwtToken = cookie.getValue();
+                    break;
+                }
             }
         }
         if (jwtToken != null) {
@@ -66,8 +67,9 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
             logger.warn("JWT_TOKEN_DOES_NOT_EXIST");
         }
         logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
+        UserDetails userDetails = null;
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.jwtInMemoryUserDetailsService.loadUserByUsername(username);
+            userDetails = this.jwtInMemoryUserDetailsService.loadUserByUsername(username);
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
@@ -77,5 +79,6 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
             }
         }
         filterChain.doFilter(request, response);
+
     }
 }

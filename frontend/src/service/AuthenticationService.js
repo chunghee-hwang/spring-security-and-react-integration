@@ -8,20 +8,16 @@ class AuthenticationService {
         );
     }
 
-    createJWTToken(token) {
-        return 'Bearer ' + token;
-    }
-
-    registerSuccessfulLoginForJwt(username, token) {
+    registerSuccessfulLoginForJwt(username) {
         sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username);
-        this.setupAxiosInterceptors(this.createJWTToken(token));
+        this.setupAxiosInterceptors();
     }
 
     // sets up the axios interceptor to add the authorization token on every subsequent REST API call. config.headers.authorization = token
-    setupAxiosInterceptors(token) {
+    setupAxiosInterceptors() {
         axios.interceptors.request.use(
             config => {
-                // 요청마다 쿠키에 받은 토큰을 서버에 전송
+                // 요청마다 쿠키에 저장된 토큰을 서버에 전송
                 config.withCredentials = true;
                 return config;
             }

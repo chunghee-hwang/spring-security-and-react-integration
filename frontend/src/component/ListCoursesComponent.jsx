@@ -8,21 +8,25 @@ import { useCallback } from 'react';
 import { useState } from 'react';
 export default function ListCoursesComponent() {
     const [courses, setCourses] = useState([]);
-    const [message, setMessage] = useState(null);
+    const [user, setUser] = useState(null);
     const refreshCourses = useCallback(() => {
         CourseDataService.retrieveAllCourses('hch0821').then(
             response => {
                 console.log(response);
-                setCourses(response.data);
+                setCourses(response.data.courses);
+                setUser(response.data.user);
             }
         );
     }, []);
     useEffect(() => {
         refreshCourses();
     }, [refreshCourses]);
+
     return (
         <div className="container">
             <h3>All courses</h3>
+            <h5>Username: {user && user.username}</h5>
+            <h5>Nickname: {user && user.nickname}</h5>
             <div className="container">
                 <table className="table">
                     <thead>

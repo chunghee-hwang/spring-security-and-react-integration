@@ -15,9 +15,8 @@ import org.springframework.stereotype.Service;
 // Provides an in-memory implementation of UserDetailsService storing the user credentials.
 @Service
 public class JwtInMemoryUserDetailService implements UserDetailsService {
-    private List<JwtUserDetails> inMemoryUserList = new ArrayList<>(Arrays
-            .stream(new JwtUserDetails[] {
-                    new JwtUserDetails(1L, "hch0821", new BCryptPasswordEncoder().encode("1234"), "ROLE_USER_2") })
+    private List<JwtUserDetails> inMemoryUserList = new ArrayList<>(Arrays.stream(new JwtUserDetails[] {
+            new JwtUserDetails(1L, "hch0821", new BCryptPasswordEncoder().encode("1234"), "노래중독자", "ROLE_USER_2") })
             .collect(Collectors.toList()));
 
     @Override

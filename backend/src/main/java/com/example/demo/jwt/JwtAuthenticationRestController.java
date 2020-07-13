@@ -51,34 +51,13 @@ public class JwtAuthenticationRestController {
                 .loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
         addTokenToCookie(response, token);
-        return ResponseEntity.status(HttpStatus.OK/* new JwtTokenResponse(token) */).body("Authentication success");
+        return new ResponseEntity<>("Authentication success", HttpStatus.OK);
     }
 
     private void addTokenToCookie(HttpServletResponse response, String token) {
-
         Cookie tokenCookie = new Cookie(tokenCookieName, token);
         tokenCookie.setMaxAge(tokenCookieExpirationTime);
         response.addCookie(tokenCookie);
-    }
-
-    // cookie에서 token을 불러온다.
-    @RequestMapping(value = "${jwt.refresh.token.uri}", method = RequestMethod.GET)
-    public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
-        String authToken = "";
-
-        // get token from a cookie
-        Cookie[] cookies = request.getCookies();
-        System.out.println(cookies);
-
-        final String token = authToken.substring(7);
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        JwtUserDetails user = (JwtUserDetails) jwtInMemoryUserDetailsService.loadUserByUsername(username);
-        if (jwtTokenUtil.canTokenBeRefreshed(token)) {
-            String refreshedToken = jwtTokenUtil.refreshToken(token);
-            return ResponseEntity.ok(new JwtTokenResponse(refreshedToken));
-        } else {
-            return ResponseEntity.badRequest().body(null);
-        }
     }
 
     @ExceptionHandler({ AuthenticationException.class })
