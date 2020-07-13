@@ -1,8 +1,10 @@
 # 스프링 시큐리티 + 리액트를 이용한 로그인 예제
 
 ## 프로젝트 목적
-1. Spring Security (Basic Authentification) + React Login
-2. Spring Security (JWT Authentification) + React Login
+Spring Security (Basic Authentification) + React Login
+
+JWT를 이용한 로그인 예제는 다음 레포지토리 참고
+[Spring Security (JWT Authentification) + React Login](https://github.com/hch0821/spring-security-and-react-integration/tree/jwt-auth)
 
 ## 참고 사이트
 https://dzone.com/articles/integrating-spring-boot-and-react-with-spring-secu-1
