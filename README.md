@@ -3,8 +3,13 @@
 ## 프로젝트 목적
 Spring Security (JWT Authentification) + React Login<br/>
 
-JWT를 사용하지 않은 기본 인증 예제는 아래 레포지토리 참고(master)
-[Spring Security (Basic Authentification) + React Login](https://github.com/hch0821/spring-security-and-react-integration)
+- JWT를 사용하지 않은 기본 인증 예제는 아래 레포지토리 참고(master)
+
+  https://github.com/hch0821/spring-security-and-react-integration
+
+- Spring Boot 3.x + Spring Security + JWT 예시
+  
+  https://github.com/chunghee-hwang/spring-boot-3-security
 
 ## 참고 사이트
 https://dzone.com/articles/integrating-spring-boot-and-react-with-spring-secu-1
