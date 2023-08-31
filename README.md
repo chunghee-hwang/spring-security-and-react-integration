@@ -3,10 +3,10 @@
 ## 프로젝트 목적
 Spring Boot 2.x + Spring Security (Basic Authentification) + React Login
 
-- Spring Boot 2.x + Spring Security + JWT + React Login 예시
+- Spring Boot 2.x + Spring Security + JWT + React Login 예시  
     https://github.com/hch0821/spring-security-and-react-integration/tree/jwt-auth
 
-- Spring Boot 3.x + Spring Security + JWT 예시는 다음 레포지토리 참고
+- Spring Boot 3.x + Spring Security + JWT 예시
     https://github.com/chunghee-hwang/spring-boot-3-security
 
 ## 참고 사이트
